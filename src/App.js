@@ -17,8 +17,8 @@ function App() {
       <Search />
       <BrowserRouter>
         <Routes>
-          <Route path="/table1" element={<Table1 />} />
-          <Route path="/table2" element={<Table2 />} />
+          <Route path="/" element={<Table1 name='myTable'/>} />
+          <Route path="/table2" element={<Table2 name='myTable-2' />} />
         </Routes>
       </BrowserRouter>
     </div>

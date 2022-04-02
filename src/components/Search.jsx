@@ -2,34 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Search = (Wcomponent) => {
-    const NewComponent = () => {
+    const NewComponent = (props) => {
+        const {name} = props
         const [search, setSearch] = useState('')
-        const [countries, setCountries] = useState('')
-        const [filterData, setFilterData] = useState([])
         function handleChange(e) {
             setSearch(e.target.value)
-        }
-        useEffect(() => {
-            async function getData() {
-                const res = await axios.get(`https://api.covid19api.com/summary`);
-                setCountries(res.data.Countries);
-            };
-            getData();
-        }, []);
-        let countriesName
-        if (countries) {
-             countriesName = countries.map((count) => {
-                return {
-                    countries: count.Country,
-                    newDeaths: count.NewDeaths,
-                    NewConfirmed: count.NewConfirmed,
-                    TotalDeaths: count.TotalDeaths
-                }
-            })
-        }
-        let passThroughProps = {
-            countriesName,
-            search
         }
         return (
             <>
@@ -41,7 +18,7 @@ const Search = (Wcomponent) => {
                         </div>
                     </div>
                 </div>
-                <Wcomponent props={passThroughProps} />
+                <Wcomponent search={search} />
             </>
         )
     }

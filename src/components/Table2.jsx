@@ -1,49 +1,54 @@
-import React from 'react';
+import React,{useState, useEffect} from 'react';
 import Search from './Search';
+import axios from 'axios';
 
 const Table2 = (props) => {
-    const {countriesName,search} = props.props;
-  let newCountriesName
-  if(countriesName){
-   newCountriesName = countriesName.splice(0,15);
-  console.log(newCountriesName) 
-}
-    return (
-        <>
-        <h3>Welcome To Table 1</h3>
-        <table className="table mt-5 w-50 m-auto">
+  const { search} = props;
+  const [pokemon, setPokemon] = useState('')
+  useEffect(() => {
+    async function getData() {
+      const res = await axios.get(`https://pokeapi.co/api/v2/pokemon/`);
+      setPokemon(res.data.results);
+    };
+    getData();
+  }, []);
+  return (
+    <>
+      <h3>Welcome To Table 2</h3>
+      <table className="table mt-5 w-50 m-auto">
         <thead>
           <tr>
             <th scope="col">Name</th>
-            <th scope="col">New Cases</th>
-            <th scope="col">New Deaths</th>
-            <th scope="col">Total Deaths</th>
+            <th scope="col">Links</th>
+            <th scope="col">Name</th>
+            <th scope="col">Name</th>
           </tr>
         </thead>
         <tbody>
-          
-          {
-            newCountriesName ? 
-          newCountriesName.filter(name => {
-            console.log(name,"name form Filter")
-            if(search === ""){
-              return name
-            }else if(name.countries.toLowerCase().includes(search.toLowerCase())){
-                return name
-            }}).map(count => {
-            return(
-          <tr>
-            <td>{count.countries}</td>
-            <td>{count.NewConfirmed}</td>
-            <td>{count.newDeaths}</td>
-            <td>{count.TotalDeaths}</td>
 
-          </tr>
-          )}) : null}
+          {
+            pokemon ?
+            pokemon.filter(name =>{
+              if(search === ""){
+                return name
+              }else if(name.name.toLowerCase().includes(search.toLowerCase())){
+                  return name
+              }
+            }).slice(0,15).map(poke => {
+              return (
+                <tr>
+                  <td>{poke.name}</td>
+                  <td>{poke.url}</td>
+                  <td>{poke.name}</td>
+                  <td>{poke.name}</td>
+
+                </tr>
+              )
+            }) : null}
         </tbody>
       </table>
-      </>
-    )
+    </>
+  )
 }
 
 
